@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/omniscience.png" alt="omniscience.md" width="330" />
+<img src="assets/omniscience.svg" alt="omniscience.md" width="330" />
 
 # omniscience.md
 
@@ -68,7 +68,8 @@ omniscience.md/
 ├── references/
 │   └── git-facts.md          # factual cheatsheet backing every rule
 └── assets/
-    └── omniscience.png       # the eye
+    ├── omniscience.svg       # the eye (vector — crisp at any size)
+    └── omniscience.png       # raster original
 ```
 
 `references/git-facts.md` grounds the rules in sourced git facts: Conventional Commits → SemVer mapping, annotated vs. lightweight tag mechanics, `--follow-tags` vs `--tags`, merge/rerere behavior, worktree interlocks, reflog recovery, and branching-model background.
