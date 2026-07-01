@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/omniscience.png" alt="omniscience.md" width="360" />
+<img src="assets/omniscience.png" alt="omniscience.md" width="330" height="330" />
 
 # omniscience.md
 
