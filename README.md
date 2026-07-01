@@ -1,8 +1,20 @@
+<div align="center">
+
+<img src="assets/omniscience.png" alt="omniscience.md" width="220" />
+
 # omniscience.md
 
-> **Every conceivable change is tracked and visible in git history — nothing is lost, nothing is invisible.**
+**A Claude Code skill for fully autonomous git management.**<br>
+*Every conceivable change is tracked and visible — nothing is lost, nothing is invisible.*
 
-A [Claude Code](https://claude.com/claude-code) skill that turns Claude into a fully autonomous git manager. It commits after every feature, branches for anything significant, tags everything, resolves merge conflicts on its own, runs parallel agents in isolated worktrees — and never, ever pushes unless you say so.
+[![Release](https://img.shields.io/github/v/tag/justin06lee/omniscience.md?label=release&sort=semver)](https://github.com/justin06lee/omniscience.md/tags)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+</div>
+
+---
+
+[omniscience.md](https://github.com/justin06lee/omniscience.md) turns Claude into a meticulous git operator. It commits after every feature, branches for anything significant, tags everything with annotated tags, resolves merge conflicts on its own, runs parallel agents in isolated worktrees — and never, ever pushes unless you say so.
 
 ## Install
 
@@ -48,7 +60,7 @@ Installs as the `omniscience` skill (`/omniscience` in Claude Code). It also tri
 - **Trunk-based branching** — short-lived typed branches (`feat/`, `fix/`, `refactor/`, `chore/`, `docs/`, `experiment/`), `--no-ff` merges to keep topology visible, immediate cleanup.
 - **Annotated tags only** for anything meaningful (tagger, date, message — lightweight tags are throwaway bookmarks).
 - **Worktree-per-agent parallelism** — sibling directories outside the repo root, shared object database, per-worktree index; `git worktree remove` + `prune` after every merge.
-- **Session hygiene** — `git init -b main` when no repo exists, `.gitignore` before the first commit, secrets never committed, pre-existing dirty state checkpointed so the baseline is clean.
+- **Session hygiene** — a fresh repo, `.gitignore`, and initial commit whenever none exists; secrets never committed; pre-existing dirty state checkpointed so the baseline is clean.
 - **Visibility** — every operation reported; `git log --oneline --graph --decorate`, `git status --short --branch`, tag and worktree listings on demand; an end-of-task checklist verifies nothing was left untracked, untagged, or force-deleted.
 
 ## Layout
@@ -56,12 +68,14 @@ Installs as the `omniscience` skill (`/omniscience` in Claude Code). It also tri
 ```
 omniscience.md/
 ├── SKILL.md                  # the skill — policies and protocols Claude follows
-└── references/
-    └── git-facts.md          # factual cheatsheet backing every rule
+├── references/
+│   └── git-facts.md          # factual cheatsheet backing every rule
+└── assets/
+    └── omniscience.png       # the eye
 ```
 
 `references/git-facts.md` grounds the rules in sourced git facts: Conventional Commits → SemVer mapping, annotated vs. lightweight tag mechanics, `--follow-tags` vs `--tags`, merge/rerere behavior, worktree interlocks, reflog recovery, and branching-model background.
 
 ## License
 
-MIT
+[MIT](LICENSE)
