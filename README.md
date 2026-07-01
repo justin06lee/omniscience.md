@@ -1,14 +1,11 @@
 <div align="center">
 
-<img src="assets/omniscience.png" alt="omniscience.md" width="330" height="330" />
+<img src="assets/omniscience.png" alt="omniscience.md" width="330" />
 
 # omniscience.md
 
 **A Claude Code skill for fully autonomous git management.**<br>
 *Every conceivable change is tracked and visible — nothing is lost, nothing is invisible.*
-
-[![Release](https://img.shields.io/github/v/tag/justin06lee/omniscience.md?label=release&sort=semver)](https://github.com/justin06lee/omniscience.md/tags)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 </div>
 
