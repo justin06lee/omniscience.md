@@ -1,6 +1,6 @@
 ---
 name: omniscience
-description: Use for ALL git management during coding sessions — committing, branching, tagging, and repo hygiene. Triggers whenever a feature, fix, or significant change is completed in a git repo (or a repo should exist but doesn't), and on phrases like "commit this", "manage git", "track my changes", "version this", "push", "tag a release". Enforces commit-after-every-feature, auto-branching for significant work, annotated tags per feature, and never pushing without explicit user instruction.
+description: Use whenever building, writing, or modifying code or files in a project — implementing features, fixing bugs, refactoring, scaffolding, editing configs or docs — regardless of whether the user mentions git. Read it BEFORE starting the work, not after. Applies in any directory that is (or should become) a git repo, and to all explicit git asks ("commit this", "branch", "merge", "tag a release", "push"). Governs the full git lifecycle around the work: auto-init, commit after every completed feature, auto-branching for significant changes, annotated tags, worktrees for parallel agents, autonomous conflict resolution — and never pushing without explicit user instruction. Skip only for pure reading/analysis tasks that change no files.
 ---
 
 # omniscience.md
