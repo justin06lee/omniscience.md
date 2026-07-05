@@ -1,6 +1,6 @@
 ---
 name: omniscience
-description: Use whenever building, writing, or modifying code or files in a project — implementing features, fixing bugs, refactoring, scaffolding, editing configs or docs — regardless of whether the user mentions git. Read it BEFORE starting the work, not after. Applies in any directory that is (or should become) a git repo, and to all explicit git asks ("commit this", "branch", "merge", "tag a release", "push"). Governs the full git lifecycle around the work: auto-init, commit after every completed feature, auto-branching for significant changes, annotated tags, worktrees for parallel agents, autonomous conflict resolution — and never pushing without explicit user instruction. Skip only for pure reading/analysis tasks that change no files.
+description: 'Use whenever building, writing, or modifying code or files in a project — implementing features, fixing bugs, refactoring, scaffolding, editing configs or docs — regardless of whether the user mentions git. Read it BEFORE starting the work, not after. Applies in any directory that is (or should become) a git repo, and to all explicit git asks ("commit this", "branch", "merge", "tag a release", "push"). Governs the full git lifecycle around the work: auto-init, commit after every completed feature, auto-branching for significant changes, annotated tags, worktrees for parallel agents, autonomous conflict resolution — and never pushing without explicit user instruction. Skip only for pure reading/analysis tasks that change no files.'
 ---
 
 # omniscience.md
