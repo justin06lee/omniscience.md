@@ -16,6 +16,7 @@ You are managing git proactively on the user's behalf. The prime directive: **ev
 5. **Never rewrite history that has been pushed.** Local, unpushed history may be amended/rebased freely to keep it clean; anything on the remote is immutable — fix forward with new commits (`git revert`, never `git reset` on shared branches).
 6. **Operate autonomously.** All local git plumbing — init, branch, commit, merge, conflict resolution, tag, worktree create/remove — happens without asking permission. Ask the user ONLY when: (a) they need to explicitly request a push, or (b) something genuinely dangerous/ambiguous comes up that risks losing their work (e.g. a conflict you cannot safely resolve, a secret already committed, diverged remote history). Everything else: do it, then report it.
 7. **Never destroy uncommitted or unmerged work.** Before any operation that could discard changes (`checkout`/`switch` over dirty files, `reset --hard`, `clean`, worktree/branch removal), verify via `git status` that nothing uncommitted would be lost — commit a checkpoint first if in doubt. Use `git branch -d` (not `-D`) so git itself refuses to delete unmerged branches; if `-d` refuses, that's a signal to investigate, not to force.
+8. **Docs are part of the change.** Every code change ships with every piece of repo documentation it makes stale brought back in sync — in the same commit. A feature is not complete while any file in the repo still describes the old behavior.
 
 ## Session start: repo state check
 
@@ -130,6 +131,16 @@ Resolve conflicts autonomously, with this protocol:
 6. **Escalate to the user only if** the two sides embody genuinely contradictory intent (e.g. one branch deletes a module the other builds upon) and any resolution would silently discard someone's work — describe both sides and ask which wins. If a merge goes sideways, `git merge --abort` restores the pre-merge state exactly; aborting and retrying is always safe and always preferable to committing a resolution you're unsure of.
 7. Enable `git config rerere.enabled true` in the repo so git records and replays your conflict resolutions if the same conflicts recur (common when integrating several parallel branches).
 
+## Documentation sync
+
+Code changes silently invalidate prose. Whenever you change behavior, structure, names, interfaces, or workflows, hunt down and update everything in the repo that now lies about the code — before considering the feature complete:
+
+- **Where staleness hides** (check whichever exist in this repo — the list is illustrative, not exhaustive): README and any `docs/` tree; CHANGELOG; code comments and docstrings near the change; usage examples, sample configs, and quickstarts; CLI `--help`/usage strings; API schemas; architecture/layout diagrams and file-tree listings; installation or setup instructions; project-level agent instructions (CLAUDE.md and similar); skills, templates, or scaffolding the repo itself ships to its users.
+- **How to hunt**: grep the repo for the old names, paths, flags, commands, and version numbers your change touched — every hit is either updated or verified still true. Check the docs nearest the changed code first, then repo-wide.
+- **Same commit as the change**: doc updates for a behavior change belong in that change's commit (atomicity — the repo should never have a commit where code and docs disagree). Standalone doc improvements unrelated to a code change are their own `docs:` commits.
+- **Scale honestly**: a typo fix needs no doc sweep; a renamed command needs a repo-wide grep. Let the blast radius of the change set the depth of the hunt.
+- New user-facing capability with no documentation anywhere? Add it to the most fitting existing doc (usually the README) rather than leaving it undocumented.
+
 ## Visibility & reporting
 
 After every git operation, tell the user what happened in one or two lines: branch created/merged, commit hash + subject, tag created. When the user asks "where are we," show:
@@ -143,13 +154,14 @@ git tag --sort=-creatordate | head
 End-of-task checklist (run mentally every time you finish work):
 
 1. All changes committed? (`git status` clean)
-2. Feature branch merged back with `--no-ff` and deleted?
-3. Merged worktrees removed and pruned? (`git worktree list` shows only the main one, unless work is still in flight)
-4. Feature tagged (annotated)?
-5. Merge conflicts (if any) resolved with tests passing and no stray conflict markers?
-6. User told what was committed/branched/merged/tagged — and what conflicted?
-7. Nothing pushed unless the user explicitly asked?
-8. Nothing force-deleted, force-removed, or hard-reset at any point?
+2. Docs in sync? (nothing in the repo — README, docs, comments, examples, shipped skills/templates — still describes pre-change behavior)
+3. Feature branch merged back with `--no-ff` and deleted?
+4. Merged worktrees removed and pruned? (`git worktree list` shows only the main one, unless work is still in flight)
+5. Feature tagged (annotated)?
+6. Merge conflicts (if any) resolved with tests passing and no stray conflict markers?
+7. User told what was committed/branched/merged/tagged — and what conflicted?
+8. Nothing pushed unless the user explicitly asked?
+9. Nothing force-deleted, force-removed, or hard-reset at any point?
 
 ## Reference
 

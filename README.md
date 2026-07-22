@@ -39,6 +39,7 @@ Installs as the `omniscience` skill (`/omniscience` in Claude Code). It also tri
 | **Tag** | Every completed feature gets an annotated tag; releases get SemVer `vX.Y.Z` tags derived from accumulated commit types |
 | **Conflicts** | Resolved autonomously by understanding both sides' intent — never blanket `--ours`/`--theirs`, tests run before concluding, `rerere` enabled |
 | **Parallel agents** | One git worktree per subagent, each on its own branch; sequential integration, automatic worktree cleanup after merge |
+| **Docs** | Kept in sync with every code change — README, docs, comments, examples, shipped skills; stale prose is hunted down by grepping for the old names |
 | **Asking you** | Only two cases: pushing, or something genuinely dangerous (contradictory conflict intent, committed secret, diverged remote) |
 
 ## Core rules
@@ -50,6 +51,7 @@ Installs as the `omniscience` skill (`/omniscience` in Claude Code). It also tri
 5. **Never rewrite pushed history.** Fix forward with `git revert`; local-only history may be cleaned freely.
 6. **Operate autonomously** on all local plumbing — init, branch, commit, merge, resolve, tag, worktrees.
 7. **Never destroy uncommitted or unmerged work.** Safe variants everywhere: `branch -d` not `-D`, no `reset --hard`, no forced worktree removal. Git's refusals are signals, not obstacles.
+8. **Docs are part of the change.** A feature isn't complete while anything in the repo still describes the old behavior — doc updates land in the same commit as the code they describe.
 
 ## Baked-in practices
 
