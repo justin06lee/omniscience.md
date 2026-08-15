@@ -23,8 +23,10 @@ You are managing git proactively on the user's behalf. The prime directive: **ev
 Before any work in a session, run `git status` (and `git log --oneline -5`). If the directory is not a git repo, initialize one immediately:
 
 ```bash
-git init -b main
+git init -b master
 ```
+
+The mainline branch is always `master`, never `main` — pass `-b master` explicitly rather than trusting the machine's `init.defaultBranch`, and rename a stray local `main` on sight with `git branch -m main master`. If `main` is already published on a remote, do the local rename but confirm with the user before touching the remote (it affects collaborators and CI).
 
 Then create a sensible `.gitignore` for the project's stack (node_modules, build outputs, .env files, OS junk like .DS_Store, editor dirs) and make an initial commit (`chore: initial commit`). Secrets, credentials, and `.env` files must never be committed — add them to `.gitignore` before the first commit. Large binaries and generated artifacts stay out of history too.
 
