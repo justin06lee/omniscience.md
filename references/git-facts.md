@@ -49,13 +49,13 @@ Tools: `git add -p` (stage hunks selectively), `git commit --fixup` +
 ## Branching models
 
 - **Trunk-based development** (current industry best practice for CD):
-  short-lived branches (hours–days) off `main`, merged back quickly;
-  main is always releasable. Favored because small, frequent integrations
+  short-lived branches (hours–days) off `master`, merged back quickly;
+  master is always releasable. Favored because small, frequent integrations
   minimize merge conflicts and keep CI meaningful.
-- **GitFlow** (Driessen, 2010): long-lived `develop` + `main`, release and
+- **GitFlow** (Driessen, 2010): long-lived `develop` + `master`, release and
   hotfix branches. Now generally considered legacy except when maintaining
   multiple released versions in parallel.
-- **GitHub Flow**: branch off main → PR → merge. The middle ground this
+- **GitHub Flow**: branch off master → PR → merge. The middle ground this
   skill effectively implements locally.
 - `git merge --no-ff` forces a merge commit even when fast-forward is
   possible, preserving the branch topology in history.
@@ -127,4 +127,5 @@ Tools: `git add -p` (stage hunks selectively), `git commit --fixup` +
   deleting the commit is not enough once pushed.
 - `git status --short --branch` and `git log --oneline --graph --decorate`
   are the fastest state overviews.
-- Default initial branch: `git init -b main` (git ≥ 2.28).
+- Initial branch: `git init -b master` (git ≥ 2.28 supports `-b`; never
+  rely on the machine's `init.defaultBranch` — pass it explicitly).
