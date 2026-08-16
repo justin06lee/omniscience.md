@@ -70,8 +70,7 @@ omniscience.md/
 ├── references/
 │   └── git-facts.md          # factual cheatsheet backing every rule
 └── assets/
-    ├── omniscience.svg       # the eye (vector — crisp at any size)
-    └── omniscience.png       # raster original
+    └── omniscience.svg       # the eye (vector — crisp at any size)
 ```
 
 `references/git-facts.md` grounds the rules in sourced git facts: Conventional Commits → SemVer mapping, annotated vs. lightweight tag mechanics, `--follow-tags` vs `--tags`, merge/rerere behavior, worktree interlocks, reflog recovery, and branching-model background.
