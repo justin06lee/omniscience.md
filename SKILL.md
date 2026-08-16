@@ -139,7 +139,7 @@ Order matters: remove the worktree before deleting its branch (a branch checked 
 Resolve conflicts autonomously, with this protocol:
 
 1. Merge with the mainline up to date and the working tree clean, so the merge is the only thing in flight.
-2. On conflict, run `git status` and `git diff` to list every conflicted path, then resolve each by **understanding both sides' intent** — read the surrounding code and both branches' commits (`git log --merge <path>` shows exactly the commits that touched the conflicted file on each side). Never resolve by blanket `--ours`/`--theirs`, and never delete one side just to make the markers go away; if both sides made real changes, the resolution usually combines them.
+2. On conflict, run `git status` and `git diff` to list every conflicted path, then resolve each by **understanding both sides' intent** — read the surrounding code and both branches' commits (`git log --merge -p <path>` shows exactly the commits — with their patches — that touched the conflicted file on each side). Never resolve by blanket `--ours`/`--theirs`, and never delete one side just to make the markers go away; if both sides made real changes, the resolution usually combines them.
 3. Check for **semantic** conflicts, not just textual ones: a merge can apply cleanly and still be broken (e.g. one branch renamed a function the other branch calls). After resolving, run the project's build/tests before concluding the merge commit.
 4. Ensure no conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`) remain: `git diff --check`.
 5. Conclude with `git commit` (keep the default merge message, appending a short note of how each conflict was resolved), then report to the user which files conflicted and how you resolved them.
