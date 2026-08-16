@@ -75,6 +75,11 @@ Tools: `git add -p` (stage hunks selectively), `git commit --fixup` +
   and git will not update a changed tag on fetch by default.
 - SemVer release tags: `vMAJOR.MINOR.PATCH`, optionally with pre-release
   suffixes (`v2.0.0-rc.1`).
+- Tags and branches share one refname lookup space. A tag and a branch with
+  the identical name make every plain reference to it ambiguous
+  (`warning: refname '...' is ambiguous`), and resolution is inconsistent:
+  `rev-parse`/`log`/`diff` prefer the tag, while `checkout`/`switch` prefer
+  the branch. Keep tag names disjoint from branch names.
 
 ## History safety
 

@@ -79,8 +79,10 @@ For work-in-progress across long tasks, prefer real checkpoint commits over `git
 Tag **every completed feature** at its merge/completion point with an **annotated** tag (annotated tags store tagger, date, and message — lightweight tags store nothing and are for throwaway bookmarks only):
 
 ```bash
-git tag -a feat/<slug> -m "Feature: <one-line summary of what shipped>"
+git tag -a feat-<slug> -m "Feature: <one-line summary of what shipped>"
 ```
+
+Feature tags are `<type>-<slug>` (hyphen) — deliberately disjoint from the `<type>/<slug>` branch names. Tags and branches share one refname lookup space: a tag named identically to a branch makes every plain reference to that name ambiguous, and git resolves it inconsistently (`log`/`rev-parse` pick the tag, `checkout`/`switch` pick the branch), which silently yields wrong commits in scripts.
 
 For releases (when the user asks, or a milestone is clearly reached), use SemVer tags `vMAJOR.MINOR.PATCH` (e.g. `v1.2.0`), bumping by the Conventional Commit types accumulated since the last release tag:
 
