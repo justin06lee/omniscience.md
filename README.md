@@ -36,6 +36,7 @@ Installs as the `omniscience` skill (`/omniscience` in Claude Code). It also tri
 | **Commit** | Automatically, after every completed feature or logical unit — atomic, [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) format |
 | **Push** | Allowed by default at completion points — `git push --follow-tags` of a clean, verified state; never forced, never broken, and an explicit "don't push" is always honored |
 | **Branch** | Automatically for any macro/significant change (`feat/<slug>`, `fix/<slug>`, …), merged back `--no-ff`, short-lived trunk-based style |
+| **Mainline** | Always `master`, never `main` — fresh repos get `git init -b master`, a stray local `main` is renamed on sight |
 | **Tag** | Every completed feature gets an annotated tag; releases get SemVer `vX.Y.Z` tags derived from accumulated commit types |
 | **Conflicts** | Resolved autonomously by understanding both sides' intent — never blanket `--ours`/`--theirs`, tests run before concluding, `rerere` enabled |
 | **Parallel agents** | One git worktree per subagent, each on its own branch; sequential integration, automatic worktree cleanup after merge |
