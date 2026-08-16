@@ -79,8 +79,10 @@ For work-in-progress across long tasks, prefer real checkpoint commits over `git
 Tag **every completed feature** at its merge/completion point with an **annotated** tag (annotated tags store tagger, date, and message — lightweight tags store nothing and are for throwaway bookmarks only):
 
 ```bash
-git tag -a feat/<slug> -m "Feature: <one-line summary of what shipped>"
+git tag -a feat-<slug> -m "Feature: <one-line summary of what shipped>"
 ```
+
+Feature tags are `<type>-<slug>` (hyphen) — deliberately disjoint from the `<type>/<slug>` branch names. Tags and branches share one refname lookup space: a tag named identically to a branch makes every plain reference to that name ambiguous, and git resolves it inconsistently (`log`/`rev-parse` pick the tag, `checkout`/`switch` pick the branch), which silently yields wrong commits in scripts.
 
 For releases (when the user asks, or a milestone is clearly reached), use SemVer tags `vMAJOR.MINOR.PATCH` (e.g. `v1.2.0`), bumping by the Conventional Commit types accumulated since the last release tag:
 
@@ -137,7 +139,7 @@ Order matters: remove the worktree before deleting its branch (a branch checked 
 Resolve conflicts autonomously, with this protocol:
 
 1. Merge with the mainline up to date and the working tree clean, so the merge is the only thing in flight.
-2. On conflict, run `git status` and `git diff` to list every conflicted path, then resolve each by **understanding both sides' intent** — read the surrounding code and both branches' commits (`git log --merge <path>` shows exactly the commits that touched the conflicted file on each side). Never resolve by blanket `--ours`/`--theirs`, and never delete one side just to make the markers go away; if both sides made real changes, the resolution usually combines them.
+2. On conflict, run `git status` and `git diff` to list every conflicted path, then resolve each by **understanding both sides' intent** — read the surrounding code and both branches' commits (`git log --merge -p <path>` shows exactly the commits — with their patches — that touched the conflicted file on each side). Never resolve by blanket `--ours`/`--theirs`, and never delete one side just to make the markers go away; if both sides made real changes, the resolution usually combines them.
 3. Check for **semantic** conflicts, not just textual ones: a merge can apply cleanly and still be broken (e.g. one branch renamed a function the other branch calls). After resolving, run the project's build/tests before concluding the merge commit.
 4. Ensure no conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`) remain: `git diff --check`.
 5. Conclude with `git commit` (keep the default merge message, appending a short note of how each conflict was resolved), then report to the user which files conflicted and how you resolved them.
@@ -174,7 +176,7 @@ End-of-task checklist (run mentally every time you finish work):
 6. Merge conflicts (if any) resolved with tests passing and no stray conflict markers?
 7. User told what was committed/branched/merged/tagged — and what conflicted?
 8. Anything pushed was a clean, verified state — nothing forced, nothing broken, no secrets?
-9. Nothing force-deleted, force-removed, or hard-reset at any point?
+9. Nothing force-deleted, force-removed, or hard-reset without first verifying nothing uncommitted would be lost?
 
 ## Reference
 

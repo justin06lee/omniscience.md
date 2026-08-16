@@ -1,0 +1,6 @@
+# Repo scaffolding — not part of the installed skill.
+# LICENSE is deliberately shipped: the MIT notice travels with copies.
+assets/
+README.md
+.gitignore
+.claude/

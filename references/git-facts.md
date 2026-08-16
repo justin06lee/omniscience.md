@@ -75,6 +75,11 @@ Tools: `git add -p` (stage hunks selectively), `git commit --fixup` +
   and git will not update a changed tag on fetch by default.
 - SemVer release tags: `vMAJOR.MINOR.PATCH`, optionally with pre-release
   suffixes (`v2.0.0-rc.1`).
+- Tags and branches share one refname lookup space. A tag and a branch with
+  the identical name make every plain reference to it ambiguous
+  (`warning: refname '...' is ambiguous`), and resolution is inconsistent:
+  `rev-parse`/`log`/`diff` prefer the tag, while `checkout`/`switch` prefer
+  the branch. Keep tag names disjoint from branch names.
 
 ## History safety
 
@@ -85,8 +90,11 @@ Tools: `git add -p` (stage hunks selectively), `git commit --fixup` +
   any commits others pushed since. `--force-with-lease` refuses if the
   remote moved since your last fetch — safer, but it still rewrites shared
   history and belongs only on branches provably nobody else uses.
-- `git reflog` can recover almost anything local for ~90 days; still,
-  prefer committed checkpoints over relying on it.
+- `git reflog` can recover local commits, but the practical window is
+  shorter than commonly quoted: entries unreachable from the current tip —
+  the lost work you'd actually be recovering — expire after 30 days by
+  default (`gc.reflogExpireUnreachable`); reachable entries after 90
+  (`gc.reflogExpire`). Prefer committed checkpoints over relying on it.
 - `git stash` entries are invisible to `git log` and easy to lose —
   checkpoint commits are more visible and durable.
 
@@ -96,8 +104,9 @@ Tools: `git add -p` (stage hunks selectively), `git commit --fixup` +
   linked to the same `.git` — each worktree has its own checked-out branch,
   index, and untracked files; commits/branches/tags are shared instantly.
 - Git refuses to check out the same branch in two worktrees.
-- Remove with `git worktree remove <path>`; recover from a hand-deleted
-  worktree with `git worktree prune`. `git worktree list` shows all.
+- Remove with `git worktree remove <path>`; after a hand-deleted worktree,
+  `git worktree prune` clears the stale metadata (it recovers nothing).
+  `git worktree list` shows all.
 - This is the correct mechanism for concurrent agents/tasks in one repo —
   cheaper than clones (shared object database) and safer than sharing a
   single checkout.
@@ -117,8 +126,9 @@ Tools: `git add -p` (stage hunks selectively), `git commit --fixup` +
   repeatedly integrating parallel branches.
 - Blanket `-X ours` / `-X theirs` strategy options silently discard one
   side's changes wherever conflicts occur — avoid for real integrations.
-- `git branch -d` refuses to delete a branch not merged into HEAD; `-D`
-  overrides that safety and can orphan work (recoverable only via reflog).
+- `git branch -d` refuses to delete a branch not merged into its upstream
+  (or into HEAD when no upstream is set); `-D` overrides that safety and
+  can orphan work (recoverable only via reflog).
 - A branch checked out in any worktree cannot be deleted until that
   worktree is removed; `git worktree remove` refuses when the worktree is
   dirty (uncommitted changes) unless forced.
