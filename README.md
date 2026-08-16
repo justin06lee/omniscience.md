@@ -67,6 +67,7 @@ Installs as the `omniscience` skill (`/omniscience` in Claude Code). It also tri
 ```
 omniscience.md/
 ├── SKILL.md                  # the skill — policies and protocols Claude follows
+├── .bmoignore                # keeps repo scaffolding (assets, README) out of installs
 ├── references/
 │   └── git-facts.md          # factual cheatsheet backing every rule
 └── assets/
