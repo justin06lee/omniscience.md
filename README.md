@@ -11,7 +11,7 @@
 
 ---
 
-[omniscience.md](https://github.com/justin06lee/omniscience.md) turns Claude into a meticulous git operator. It commits after every feature, branches for anything significant, tags everything with annotated tags, resolves merge conflicts on its own, runs parallel agents in isolated worktrees — and never, ever pushes unless you say so.
+[omniscience.md](https://github.com/justin06lee/omniscience.md) turns Claude into a meticulous git operator. It commits after every feature, branches for anything significant, tags everything with annotated tags, resolves merge conflicts on its own, runs parallel agents in isolated worktrees — and pushes finished work on its own, carefully: never a force-push, never a broken state, and "don't push" always wins.
 
 ## Install
 
@@ -34,18 +34,18 @@ Installs as the `omniscience` skill (`/omniscience` in Claude Code). It also tri
 | Behavior | Policy |
 |---|---|
 | **Commit** | Automatically, after every completed feature or logical unit — atomic, [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) format |
-| **Push** | **Never**, unless you explicitly say so — then `git push --follow-tags` |
+| **Push** | Allowed by default at completion points — `git push --follow-tags` of a clean, verified state; never forced, never broken, and an explicit "don't push" is always honored |
 | **Branch** | Automatically for any macro/significant change (`feat/<slug>`, `fix/<slug>`, …), merged back `--no-ff`, short-lived trunk-based style |
 | **Tag** | Every completed feature gets an annotated tag; releases get SemVer `vX.Y.Z` tags derived from accumulated commit types |
 | **Conflicts** | Resolved autonomously by understanding both sides' intent — never blanket `--ours`/`--theirs`, tests run before concluding, `rerere` enabled |
 | **Parallel agents** | One git worktree per subagent, each on its own branch; sequential integration, automatic worktree cleanup after merge |
 | **Docs** | Kept in sync with every code change — README, docs, comments, examples, shipped skills; stale prose is hunted down by grepping for the old names |
-| **Asking you** | Only two cases: pushing, or something genuinely dangerous (contradictory conflict intent, committed secret, diverged remote) |
+| **Asking you** | Only for genuine danger: contradictory conflict intent, a committed secret, a diverged remote it can't cleanly integrate, renaming a published `main` |
 
 ## Core rules
 
 1. **Commit after every completed feature.** No batching unrelated work, no leaving finished work uncommitted.
-2. **Never push without explicit instruction.** "Commit" ≠ push. Finishing ≠ push.
+2. **Push freely, never destructively.** Finished, verified work is pushed without asking; force-pushes, broken states, and secrets never leave the machine — and "don't push" always wins.
 3. **Branch automatically** for significant work — no confirmation, report afterwards.
 4. **Tag every completed feature** with an annotated tag.
 5. **Never rewrite pushed history.** Fix forward with `git revert`; local-only history may be cleaned freely.

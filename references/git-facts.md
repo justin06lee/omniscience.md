@@ -81,6 +81,10 @@ Tools: `git add -p` (stage hunks selectively), `git commit --fixup` +
 - Rewriting (rebase, amend, reset) is fine for commits that exist ONLY
   locally. Once pushed/shared, history is immutable — undo with
   `git revert` (new inverse commit) instead of `git reset`.
+- `git push --force` overwrites the remote ref unconditionally, discarding
+  any commits others pushed since. `--force-with-lease` refuses if the
+  remote moved since your last fetch — safer, but it still rewrites shared
+  history and belongs only on branches provably nobody else uses.
 - `git reflog` can recover almost anything local for ~90 days; still,
   prefer committed checkpoints over relying on it.
 - `git stash` entries are invisible to `git log` and easy to lose —

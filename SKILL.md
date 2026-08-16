@@ -1,20 +1,20 @@
 ---
 name: omniscience
-description: 'Use whenever building, writing, or modifying code or files in a project — implementing features, fixing bugs, refactoring, scaffolding, editing configs or docs — regardless of whether the user mentions git. Read it BEFORE starting the work, not after. Applies in any directory that is (or should become) a git repo, and to all explicit git asks ("commit this", "branch", "merge", "tag a release", "push"). Governs the full git lifecycle around the work: auto-init, commit after every completed feature, auto-branching for significant changes, annotated tags, worktrees for parallel agents, autonomous conflict resolution — and never pushing without explicit user instruction. Skip only for pure reading/analysis tasks that change no files.'
+description: 'Use whenever building, writing, or modifying code or files in a project — implementing features, fixing bugs, refactoring, scaffolding, editing configs or docs — regardless of whether the user mentions git. Read it BEFORE starting the work, not after. Applies in any directory that is (or should become) a git repo, and to all explicit git asks ("commit this", "branch", "merge", "tag a release", "push"). Governs the full git lifecycle around the work: auto-init, commit after every completed feature, auto-branching for significant changes, annotated tags, worktrees for parallel agents, autonomous conflict resolution — and careful pushing that only ever sends clean, verified history and never force-pushes. Skip only for pure reading/analysis tasks that change no files.'
 ---
 
 # omniscience.md
 
-You are managing git proactively on the user's behalf. The prime directive: **every conceivable change is tracked and visible in git history — nothing is lost, nothing is invisible.** You act autonomously for local operations and NEVER touch the remote without explicit instruction.
+You are managing git proactively on the user's behalf. The prime directive: **every conceivable change is tracked and visible in git history — nothing is lost, nothing is invisible.** You act autonomously — pushing included — but the remote is shared history: it only ever receives clean, verified states, and is never force-pushed or broken.
 
 ## Core rules (non-negotiable)
 
 1. **Commit after every completed feature or logical unit of work.** Do not batch unrelated work into one commit. Do not leave completed work uncommitted at the end of a turn.
-2. **Never push unless the user explicitly says to push** (e.g. "push", "push it", "publish this"). "Commit" does not mean push. Finishing a feature does not mean push. When the user does say push, push the branch AND its tags (`git push --follow-tags`).
+2. **Push freely, never destructively.** Pushing completed, verified work needs no explicit permission — push at natural completion points (a feature merged into the mainline, a finished task) and whenever the user asks. What is never allowed is a *bad* push: no force-pushes to shared branches, no broken or untested states, no secrets — and an explicit "don't push" / "keep this local" from the user always wins. Push the branch AND its tags (`git push --follow-tags`). Full protocol in the Pushing section.
 3. **Branch automatically for any macro/significant feature** — no confirmation, just do it and tell the user afterwards.
 4. **Tag every completed feature** with an annotated tag.
 5. **Never rewrite history that has been pushed.** Local, unpushed history may be amended/rebased freely to keep it clean; anything on the remote is immutable — fix forward with new commits (`git revert`, never `git reset` on shared branches).
-6. **Operate autonomously.** All local git plumbing — init, branch, commit, merge, conflict resolution, tag, worktree create/remove — happens without asking permission. Ask the user ONLY when: (a) they need to explicitly request a push, or (b) something genuinely dangerous/ambiguous comes up that risks losing their work (e.g. a conflict you cannot safely resolve, a secret already committed, diverged remote history). Everything else: do it, then report it.
+6. **Operate autonomously.** All git plumbing — init, branch, commit, merge, conflict resolution, tag, worktree create/remove, and routine pushes — happens without asking permission. Ask the user ONLY when something genuinely dangerous or ambiguous risks losing their work or breaking shared history: a conflict you cannot safely resolve, a secret already committed or pushed, a diverged remote you cannot cleanly integrate, or renaming a published `main` on the remote (it affects collaborators and CI). Everything else: do it, then report it.
 7. **Never destroy uncommitted or unmerged work.** Before any operation that could discard changes (`checkout`/`switch` over dirty files, `reset --hard`, `clean`, worktree/branch removal), verify via `git status` that nothing uncommitted would be lost — commit a checkpoint first if in doubt. Use `git branch -d` (not `-D`) so git itself refuses to delete unmerged branches; if `-d` refuses, that's a signal to investigate, not to force.
 8. **Docs are part of the change.** Every code change ships with every piece of repo documentation it makes stale brought back in sync — in the same commit. A feature is not complete while any file in the repo still describes the old behavior.
 
@@ -90,7 +90,18 @@ git tag -a v1.2.0 -m "Release v1.2.0
 - <feat/fix highlights since last tag>"
 ```
 
-Never move, reuse, or delete a tag that has been pushed — cut a new one instead. Tags are only pushed as part of an explicit user-requested push (`--follow-tags` pushes annotated tags reachable from the pushed refs).
+Never move, reuse, or delete a tag that has been pushed — cut a new one instead. Tags ride along with every push (`--follow-tags` pushes annotated tags reachable from the pushed refs) — never push tags wholesale with `--tags`.
+
+## Pushing
+
+Pushing is a normal part of finishing work — it needs no explicit instruction. The leniency is about *permission*, not *care*: the remote is shared, visible history, so only pushes that cannot break anything are allowed.
+
+- **When**: at natural completion points — a feature merged into the mainline, a finished task — and whenever the user asks. Never push mid-task or broken states; the remote should only ever advance to a state a collaborator could pull and build.
+- **How**: `git push --follow-tags` (first push of a branch: add `-u origin <branch>` to set the upstream).
+- **Pre-push check, every time**: working tree clean, tests/build passing where they exist, and the outgoing commits reviewed (`git log @{u}..`, or `git log origin/master..HEAD` before an upstream exists) so you know exactly what is leaving the machine — including that none of it contains secrets. An unpushed secret can still be rewritten away; a pushed one can only be rotated.
+- **Never force-push a shared branch.** No `--force`; `--force-with-lease` only on a branch that is provably yours alone (e.g. an unmerged feature branch nobody else has fetched). Remote history is immutable (rule 5) — fix mistakes forward with `git revert`.
+- **Diverged remote**: `git fetch` first. If the remote holds commits you don't, integrate locally (merge, or rebase your *unpushed* commits onto the new tip) and push the combined result. If the divergence looks like someone else's in-flight work, or the histories genuinely conflict, stop and ask instead of guessing.
+- **The user's word always wins**: "don't push" / "keep this local" means exactly that until they lift it.
 
 ## Parallel work: worktrees
 
@@ -162,7 +173,7 @@ End-of-task checklist (run mentally every time you finish work):
 5. Feature tagged (annotated)?
 6. Merge conflicts (if any) resolved with tests passing and no stray conflict markers?
 7. User told what was committed/branched/merged/tagged — and what conflicted?
-8. Nothing pushed unless the user explicitly asked?
+8. Anything pushed was a clean, verified state — nothing forced, nothing broken, no secrets?
 9. Nothing force-deleted, force-removed, or hard-reset at any point?
 
 ## Reference
