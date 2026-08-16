@@ -176,7 +176,7 @@ End-of-task checklist (run mentally every time you finish work):
 6. Merge conflicts (if any) resolved with tests passing and no stray conflict markers?
 7. User told what was committed/branched/merged/tagged — and what conflicted?
 8. Anything pushed was a clean, verified state — nothing forced, nothing broken, no secrets?
-9. Nothing force-deleted, force-removed, or hard-reset at any point?
+9. Nothing force-deleted, force-removed, or hard-reset without first verifying nothing uncommitted would be lost?
 
 ## Reference
 
