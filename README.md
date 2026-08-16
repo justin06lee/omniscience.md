@@ -24,7 +24,7 @@ bmo add justin06lee/omniscience.md
 Or from a local clone:
 
 ```bash
-bmo add .
+bmo add ./
 ```
 
 Installs as the `omniscience` skill (`/omniscience` in Claude Code). It also triggers automatically whenever Claude is about to build or modify anything in (or near) a git repo — read before the work starts, governing the whole git lifecycle around it.
